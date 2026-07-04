@@ -7,6 +7,22 @@
     --bg-alt: #f9fafb;
     --border: #e5e7eb;
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.4);
+}
+
+/* Dark mode — respects the OS setting */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary: #60a5fa;
+        --primary-dark: #93c5fd;
+        --text: #e5e7eb;
+        --text-light: #9ca3af;
+        --bg: #0f172a;
+        --bg-alt: #1e293b;
+        --border: #334155;
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        --focus-ring: 0 0 0 3px rgba(96, 165, 250, 0.45);
+    }
 }
 
 * {
@@ -355,5 +371,131 @@ footer p {
 
     .date {
         margin-left: 0;
+    }
+}
+
+/* Keyboard accessibility — visible focus for all interactive elements */
+a:focus-visible,
+.translation-card:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: 4px;
+}
+
+/* Skip link — hidden until focused via keyboard */
+.skip-link {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    padding: 0.75rem 1rem;
+    background: var(--primary);
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transform: translateY(-150%);
+    transition: transform 0.2s;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* Print styles — a CV should print cleanly */
+@media print {
+    body {
+        background: #fff;
+        color: #000;
+        font-size: 11pt;
+    }
+
+    .container {
+        max-width: none;
+        padding: 0;
+    }
+
+    /* Remove decorative colors and use ink-friendly styling */
+    :root {
+        --primary: #000;
+        --text: #000;
+        --text-light: #333;
+        --bg: #fff;
+        --bg-alt: #fff;
+        --border: #999;
+        --shadow: none;
+    }
+
+    header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+    }
+
+    h1,
+    h2,
+    h3 {
+        color: #000;
+    }
+
+    h2 {
+        border-bottom: 1px solid #000;
+    }
+
+    .timeline {
+        padding-left: 1.25rem;
+    }
+
+    .timeline::before {
+        background: #000;
+    }
+
+    .timeline-marker {
+        background: #000;
+        box-shadow: none;
+    }
+
+    .timeline-content,
+    .education-item,
+    .translation-card {
+        background: #fff;
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    .timeline-item {
+        page-break-inside: avoid;
+    }
+
+    section {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Hide things that don't belong on paper */
+    .skip-link,
+    .social-links {
+        display: none;
+    }
+
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    /* Show URLs after links so they're readable in print */
+    .translation-card::after {
+        content: attr(href);
+        display: block;
+        font-size: 9pt;
+        color: #333;
+        word-break: break-all;
     }
 }
